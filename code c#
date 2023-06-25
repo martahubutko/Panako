@@ -1,0 +1,67 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+
+namespace PlatformerGame
+{
+    public class Game1 : Game
+    {
+        private GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
+        private Texture2D _playerTexture;
+        private Vector2 _playerPosition;
+
+        public Game1()
+        {
+            _graphics = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
+            IsMouseVisible = true;
+        }
+
+        protected override void Initialize()
+        {
+            // Set up player position
+            _playerPosition = new Vector2(100, 100);
+
+            base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _playerTexture = Content.Load<Texture2D>("player");
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                _playerPosition.X -= 2;
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                _playerPosition.X += 2;
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                _playerPosition.Y -= 5;
+
+            base.Update(gameTime);
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            _spriteBatch.Begin();
+            _spriteBatch.Draw(_playerTexture, _playerPosition, Color.White);
+            _spriteBatch.End();
+
+            base.Draw(gameTime);
+        }
+    }
+
+    public static class Program
+    {
+        static void Main()
+        {
+            using (var game = new Game1())
+                game.Run();
+        }
+    }
+}
